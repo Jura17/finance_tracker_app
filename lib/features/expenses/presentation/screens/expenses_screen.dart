@@ -15,6 +15,10 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
         title: Text("Ausgaben-Tracker"),
       ),
       body: Center(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
