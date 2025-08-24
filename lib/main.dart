@@ -1,8 +1,17 @@
+import 'package:finance_tracker_app/features/expenses/bloc/events/expense_event.dart';
+import 'package:finance_tracker_app/features/expenses/data/repos/database_repo.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/screens/expenses_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MainApp());
+  final databaseRepo = DatabaseRepo();
+  runApp(
+    BlocProvider(
+      create: (context) => ExpenseBloc(databaseRepo),
+      child: const MainApp(),
+    ),
+  );
 }
 
 class MainApp extends StatelessWidget {

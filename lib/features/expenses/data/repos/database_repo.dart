@@ -3,9 +3,10 @@ import 'package:finance_tracker_app/features/expenses/data/models/expense.dart';
 import 'package:finance_tracker_app/features/expenses/data/provider/local_database.dart';
 
 class DatabaseRepo {
-  LocalDatabase localDatabase;
-
-  DatabaseRepo(this.localDatabase);
+  final localDatabase = LocalDatabase();
+  DatabaseRepo() {
+    localDatabase.addMockData();
+  }
 
   List<Expense> get expenses => localDatabase.expenses;
 

@@ -1,16 +1,18 @@
+import 'package:finance_tracker_app/features/expenses/bloc/events/expense_event.dart';
 import 'package:finance_tracker_app/features/expenses/data/models/expense.dart';
 import 'package:finance_tracker_app/features/expenses/utils/expense_category.dart';
-import 'package:finance_tracker_app/features/expenses/data/repos/database_repo.dart';
+// import 'package:finance_tracker_app/features/expenses/data/repos/database_repo.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/category_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewExpenseModal extends StatefulWidget {
   const NewExpenseModal({
     super.key,
-    required this.repo,
+    // required this.repo,
   });
 
-  final DatabaseRepo repo;
+  // final DatabaseRepo repo;
 
   @override
   State<NewExpenseModal> createState() => _NewExpenseModalState();
@@ -83,15 +85,15 @@ class _NewExpenseModalState extends State<NewExpenseModal> {
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         final expense = Expense(
-                          id: DateTime.fromMillisecondsSinceEpoch.toString(),
+                          id: DateTime.now().millisecondsSinceEpoch.toString(),
                           date: DateTime.now(),
                           category: selectedCategory,
                           description: descriptionCtrl.text,
                           amount: double.parse(amountCtrl.text),
                         );
-
-                        widget.repo.addExpense(expense);
-                        setState(() {});
+                        context.read<ExpenseBloc>().add(AddExpense(expense));
+                        // widget.repo.addExpense(expense);
+                        // setState(() {});
                         Navigator.of(context).pop();
                       }
                     },
