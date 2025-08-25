@@ -17,7 +17,8 @@ class AmountField extends StatelessWidget {
         inputFormatters: [],
         validator: (value) {
           if (value == null || value.isEmpty) return "Bitte Betrag angeben";
-          if (double.tryParse(value) == null) return "Numerischen Wert eingeben";
+          final normalized = value.replaceAll(',', '.');
+          if (double.tryParse(normalized) == null) return "Numerischen Wert eingeben";
           return null;
         },
         autovalidateMode: AutovalidateMode.onUserInteraction,

@@ -34,7 +34,7 @@ class ConfirmButton extends StatelessWidget {
             date: DateTime.now(),
             category: selectedCategory,
             description: descriptionCtrl.text,
-            amount: double.parse(amountCtrl.text),
+            amount: double.parse(amountCtrl.text.replaceAll(',', '.')),
           );
           context.read<ExpenseBloc>().add(AddExpense(expense));
           Navigator.of(context).pop();

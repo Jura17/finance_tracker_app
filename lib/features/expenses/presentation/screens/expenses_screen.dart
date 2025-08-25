@@ -41,7 +41,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
               }
             },
             builder: (context, state) {
-              var filteredExpenses = state.filteredExpenses;
+              final filteredExpenses = state.filteredExpenses;
 
               return Column(
                 spacing: 20,

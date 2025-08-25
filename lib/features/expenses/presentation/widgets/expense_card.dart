@@ -16,8 +16,11 @@ class ExpenseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // use German date format
     final dateFormat = DateFormat('dd.MM.yyyy');
     final formattedDate = dateFormat.format(filteredExpenses[index].date);
+
+    // truncate amount to 2 decimal points to prevent rounding, i.e. 2,999 -> 2,99
     final truncatedValue = truncateTo2Decimals(filteredExpenses[index].amount);
 
     return Dismissible(
@@ -36,6 +39,7 @@ class ExpenseCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Category & Date
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -48,6 +52,7 @@ class ExpenseCard extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 10),
+                // Description & Amount
                 Expanded(
                   child: Row(
                     children: [
