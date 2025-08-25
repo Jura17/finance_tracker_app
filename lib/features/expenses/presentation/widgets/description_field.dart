@@ -11,14 +11,18 @@ class DescriptionField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       validator: (value) {
         if (value == null || value.isEmpty) return "Bitte Beschreibung hinzufügen";
         return null;
       },
       controller: descriptionCtrl,
-      maxLines: null,
-      maxLength: 500,
-      decoration: InputDecoration(hintText: "Beschreibung", border: OutlineInputBorder()),
+      maxLines: 3,
+      maxLength: 70,
+      decoration: InputDecoration(
+        hintText: "Beschreibung",
+        border: OutlineInputBorder(),
+      ),
     );
   }
 }

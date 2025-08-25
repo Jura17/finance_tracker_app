@@ -1,9 +1,10 @@
+import 'package:finance_tracker_app/core/app_colors.dart';
 import 'package:finance_tracker_app/features/expenses/bloc/expense_bloc.dart';
 import 'package:finance_tracker_app/features/expenses/bloc/expense_event.dart';
 import 'package:finance_tracker_app/features/expenses/bloc/expense_state.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/category_dropdown.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/expense_card.dart';
-import 'package:finance_tracker_app/features/expenses/utils/expense_category.dart';
+import 'package:finance_tracker_app/core/utils/expense_category.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/new_expense_modal.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,7 +20,12 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Ausgaben-Tracker")),
+      appBar: AppBar(
+        title: Text(
+          "Ausgaben-Tracker",
+          style: TextStyle(color: AppColors.lightForegroundText),
+        ),
+      ),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

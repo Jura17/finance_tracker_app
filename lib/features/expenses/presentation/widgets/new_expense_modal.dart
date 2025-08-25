@@ -1,7 +1,7 @@
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/amount_field.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/confirm_button.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/description_field.dart';
-import 'package:finance_tracker_app/features/expenses/utils/expense_category.dart';
+import 'package:finance_tracker_app/core/utils/expense_category.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/category_dropdown.dart';
 import 'package:flutter/material.dart';
 
@@ -28,17 +28,18 @@ class _NewExpenseModalState extends State<NewExpenseModal> {
         children: [
           Text(
             "Neuer Eintrag",
-            style: Theme.of(context).textTheme.displaySmall,
+            style: Theme.of(context).textTheme.displaySmall!.copyWith(fontWeight: FontWeight.w500),
           ),
+          SizedBox(height: 10),
           Form(
             key: formKey,
             child: SingleChildScrollView(
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 5,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                spacing: 10,
                 children: [
                   Row(
-                    spacing: 5,
+                    spacing: 10,
                     children: [
                       AmountField(amountCtrl: amountCtrl),
                       CategoryDropdown(

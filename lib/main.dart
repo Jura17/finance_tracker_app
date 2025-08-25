@@ -1,3 +1,4 @@
+import 'package:finance_tracker_app/core/app_theme.dart';
 import 'package:finance_tracker_app/features/expenses/bloc/expense_bloc.dart';
 import 'package:finance_tracker_app/features/expenses/data/repos/database_repo.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/screens/expenses_screen.dart';
@@ -19,6 +20,10 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: ExpensesScreen());
+    return MaterialApp(
+      home: ExpensesScreen(),
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.appTheme,
+    );
   }
 }

@@ -23,7 +23,7 @@ class AmountField extends StatelessWidget {
         autovalidateMode: AutovalidateMode.onUserInteraction,
         keyboardType: TextInputType.numberWithOptions(decimal: true),
         controller: amountCtrl,
-        decoration: InputDecoration(hintText: "Betrag", border: OutlineInputBorder()),
+        decoration: InputDecoration(hintText: "Betrag"),
       ),
     );
   }

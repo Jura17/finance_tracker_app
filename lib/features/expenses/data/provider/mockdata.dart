@@ -1,4 +1,4 @@
-import 'package:finance_tracker_app/features/expenses/utils/expense_category.dart';
+import 'package:finance_tracker_app/core/utils/expense_category.dart';
 import 'package:finance_tracker_app/features/expenses/data/models/expense.dart';
 
 final List<Expense> mockData = [
