@@ -1,9 +1,9 @@
-import 'package:finance_tracker_app/features/expenses/bloc/events/expense_event.dart';
-import 'package:finance_tracker_app/features/expenses/data/models/expense.dart';
+import 'package:finance_tracker_app/features/expenses/presentation/widgets/amount_field.dart';
+import 'package:finance_tracker_app/features/expenses/presentation/widgets/confirm_button.dart';
+import 'package:finance_tracker_app/features/expenses/presentation/widgets/description_field.dart';
 import 'package:finance_tracker_app/features/expenses/utils/expense_category.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/category_dropdown.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewExpenseModal extends StatefulWidget {
   const NewExpenseModal({super.key});
@@ -40,57 +40,21 @@ class _NewExpenseModalState extends State<NewExpenseModal> {
                   Row(
                     spacing: 5,
                     children: [
-                      Expanded(
-                        child: TextFormField(
-                          autocorrect: false,
-                          enableSuggestions: false,
-                          inputFormatters: [],
-                          validator: (value) {
-                            if (value == null || value.isEmpty) return "Bitte Betrag angeben";
-                            if (double.tryParse(value) == null) return "Numerischen Wert eingeben";
-                            return null;
-                          },
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                          keyboardType: TextInputType.numberWithOptions(decimal: true),
-                          controller: amountCtrl,
-                          decoration: InputDecoration(hintText: "Betrag", border: OutlineInputBorder()),
-                        ),
-                      ),
-                      Expanded(
-                        child: CategoryDropdown(
-                          selectedCategory: selectedCategory,
-                          onCategoryChanged: (value) {
-                            if (value != null) selectedCategory = value;
-                          },
-                        ),
+                      AmountField(amountCtrl: amountCtrl),
+                      CategoryDropdown(
+                        selectedCategory: selectedCategory,
+                        onCategoryChanged: (value) {
+                          if (value != null) selectedCategory = value;
+                        },
                       ),
                     ],
                   ),
-                  TextFormField(
-                    validator: (value) {
-                      if (value == null || value.isEmpty) return "Bitte Beschreibung hinzufügen";
-                      return null;
-                    },
-                    controller: descriptionCtrl,
-                    maxLines: null,
-                    maxLength: 500,
-                    decoration: InputDecoration(hintText: "Beschreibung", border: OutlineInputBorder()),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        final expense = Expense(
-                          id: DateTime.now().millisecondsSinceEpoch.toString(),
-                          date: DateTime.now(),
-                          category: selectedCategory,
-                          description: descriptionCtrl.text,
-                          amount: double.parse(amountCtrl.text),
-                        );
-                        context.read<ExpenseBloc>().add(AddExpense(expense));
-                        Navigator.of(context).pop();
-                      }
-                    },
-                    child: Text("Eintrag anlegen"),
+                  DescriptionField(descriptionCtrl: descriptionCtrl),
+                  ConfirmButton(
+                    formKey: formKey,
+                    selectedCategory: selectedCategory,
+                    descriptionCtrl: descriptionCtrl,
+                    amountCtrl: amountCtrl,
                   )
                 ],
               ),

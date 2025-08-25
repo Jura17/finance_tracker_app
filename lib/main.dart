@@ -1,4 +1,4 @@
-import 'package:finance_tracker_app/features/expenses/bloc/events/expense_event.dart';
+import 'package:finance_tracker_app/features/expenses/bloc/expense_bloc.dart';
 import 'package:finance_tracker_app/features/expenses/data/repos/database_repo.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/screens/expenses_screen.dart';
 import 'package:flutter/material.dart';

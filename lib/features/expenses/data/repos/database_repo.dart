@@ -1,7 +1,6 @@
 import 'package:finance_tracker_app/features/expenses/utils/expense_category.dart';
 import 'package:finance_tracker_app/features/expenses/data/models/expense.dart';
 import 'package:finance_tracker_app/features/expenses/data/provider/local_database.dart';
-import 'package:flutter/material.dart';
 
 class DatabaseRepo {
   final localDatabase = LocalDatabase();
