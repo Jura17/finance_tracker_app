@@ -2,9 +2,8 @@ import 'package:finance_tracker_app/features/expenses/bloc/events/expense_event.
 import 'package:finance_tracker_app/features/expenses/bloc/states/expense_state.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/category_dropdown.dart';
 import 'package:finance_tracker_app/features/expenses/utils/expense_category.dart';
-// import 'package:finance_tracker_app/features/expenses/data/provider/local_database.dart';
-// import 'package:finance_tracker_app/features/expenses/data/repos/database_repo.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/new_expense_modal.dart';
+import 'package:finance_tracker_app/features/expenses/utils/truncate_decimals.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -17,32 +16,22 @@ class ExpensesScreen extends StatefulWidget {
 }
 
 class _ExpensesScreenState extends State<ExpensesScreen> {
-  // late DatabaseRepo repo;
-  ExpenseCategory? selectedCategory;
-  // var filteredExpenses = [];
-
-  @override
-  void initState() {
-    super.initState();
-    // repo = DatabaseRepo();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Ausgaben-Tracker"),
-      ),
+      appBar: AppBar(title: Text("Ausgaben-Tracker")),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: BlocConsumer<ExpenseBloc, ExpenseState>(
             listener: (context, state) {
-              // add snackbars later
+              if (state.message != null) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(state.message!)));
+              }
             },
             builder: (context, state) {
               final repo = context.read<ExpenseBloc>().repo;
-              final filteredExpenses = repo.filterByCategory(state.selectedCategory);
+              var filteredExpenses = repo.filterByCategory(state.selectedCategory);
 
               return Column(
                 children: [
@@ -53,11 +42,6 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                         selectedCategory: state.selectedCategory,
                         onCategoryChanged: (value) {
                           context.read<ExpenseBloc>().add(FilterExpenses(value));
-                          print(value);
-
-                          // setState(() {
-                          // filteredExpenses = repo.filterByCategory(selectedCategory);
-                          // });
                         },
                         isForFiltering: true,
                       )
@@ -78,6 +62,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                             itemBuilder: (BuildContext context, int index) {
                               final dateFormat = DateFormat('dd.MM.yyyy, HH:mm');
                               final formattedDate = dateFormat.format(filteredExpenses[index].date);
+                              final truncatedValue = truncateTo2Decimals(filteredExpenses[index].amount);
 
                               return Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 4.0),
@@ -93,16 +78,13 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                           children: [
                                             Text(
-                                              "${filteredExpenses[index].amount.toStringAsFixed(2)} €",
+                                              "$truncatedValue €",
                                               style: Theme.of(context).textTheme.headlineMedium,
                                             ),
                                             IconButton(
                                               onPressed: () {
                                                 final expenseId = filteredExpenses[index].id;
                                                 context.read<ExpenseBloc>().add(RemoveExpense(expenseId));
-                                                // setState(() {
-                                                //   repo.removeExpense(filteredExpenses[index].id);
-                                                // });
                                               },
                                               icon: Icon(Icons.delete),
                                             )
@@ -116,7 +98,8 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                                   ),
                                 ),
                               );
-                            }),
+                            },
+                          ),
                   ),
                 ],
               );

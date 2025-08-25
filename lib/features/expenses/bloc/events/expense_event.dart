@@ -26,20 +26,21 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
   final DatabaseRepo repo;
 
   ExpenseBloc(this.repo) : super(ExpenseState()) {
-    // add
+    // ADD
     on<AddExpense>((event, emit) {
       repo.addExpense(event.expense);
-      emit(state.copyWith());
+      emit(state.copyWith(message: "Eintrag wurde erstellt."));
     });
 
-    // remove
+    // REMOVE
     on<RemoveExpense>((event, emit) {
       repo.removeExpense(event.id);
-      emit(state.copyWith());
+      emit(state.copyWith(message: "Eintrag wurde gelöscht."));
     });
 
-    // filter
+    // FILTER
     on<FilterExpenses>((event, emit) {
+      repo.filterByCategory(event.category);
       emit(state.copyWith(selectedCategory: event.category));
     });
   }

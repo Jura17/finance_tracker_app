@@ -1,18 +1,19 @@
-import 'package:finance_tracker_app/features/expenses/data/models/expense.dart';
 import 'package:finance_tracker_app/features/expenses/utils/expense_category.dart';
 
 class ExpenseState {
   final ExpenseCategory? selectedCategory;
+  final String? message;
 
-  ExpenseState({this.selectedCategory});
+  ExpenseState({this.selectedCategory, this.message});
 
   // used to overwrite state
   ExpenseState copyWith({
-    List<Expense>? allExpenses,
     ExpenseCategory? selectedCategory,
+    String? message,
   }) {
     return ExpenseState(
-      selectedCategory: selectedCategory ?? this.selectedCategory,
+      selectedCategory: selectedCategory,
+      message: message,
     );
   }
 }
