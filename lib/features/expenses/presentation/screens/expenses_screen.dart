@@ -46,6 +46,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
               return Column(
                 spacing: 20,
                 children: [
+                  // Category selection
                   CategoryDropdown(
                     selectedCategory: state.selectedCategory,
                     onCategoryChanged: (value) {
@@ -63,6 +64,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           )
+                        // Expense cards
                         : ListView.builder(
                             itemCount: filteredExpenses.length,
                             itemBuilder: (BuildContext context, int index) {
