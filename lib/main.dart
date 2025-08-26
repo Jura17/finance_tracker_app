@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   final databaseRepo = DatabaseRepo();
+
   runApp(
     BlocProvider(
       create: (context) => ExpenseBloc(databaseRepo),

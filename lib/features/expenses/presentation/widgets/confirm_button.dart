@@ -36,8 +36,10 @@ class ConfirmButton extends StatelessWidget {
             description: descriptionCtrl.text,
             amount: double.parse(amountCtrl.text.replaceAll(',', '.')),
           );
+          final previousCategory = context.read<ExpenseBloc>().state.selectedCategory;
           context.read<ExpenseBloc>().add(AddExpense(expense));
           Navigator.of(context).pop();
+          context.read<ExpenseBloc>().add(FilterExpenses(previousCategory));
         }
       },
       child: Text("Eintrag anlegen"),

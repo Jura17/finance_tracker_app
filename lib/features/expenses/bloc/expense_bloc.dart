@@ -15,22 +15,38 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
 
     // ADD
     on<AddExpense>((event, emit) {
+      print(event.expense.category);
       repo.addExpense(event.expense);
-      emit(state.copyWith(message: "Eintrag wurde erstellt."));
+      final updatedFiltered = repo.filterByCategory(event.expense.category);
+
+      emit(
+        state.copyWith(
+          filteredExpenses: updatedFiltered,
+          selectedCategory: state.selectedCategory,
+          message: "Eintrag wurde erstellt.",
+        ),
+      );
     });
 
     // REMOVE
     on<RemoveExpense>((event, emit) {
       repo.removeExpense(event.id);
-      emit(state.copyWith(message: "Eintrag wurde gelöscht."));
+      final updatedFiltered = repo.filterByCategory(state.selectedCategory);
+
+      emit(state.copyWith(
+        message: "Eintrag wurde gelöscht.",
+        filteredExpenses: updatedFiltered,
+      ));
     });
 
     // FILTER
     on<FilterExpenses>((event, emit) {
       final filtered = repo.filterByCategory(event.category);
+
       emit(state.copyWith(
         selectedCategory: event.category,
         filteredExpenses: filtered,
+        message: "",
       ));
     });
 

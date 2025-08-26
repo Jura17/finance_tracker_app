@@ -38,7 +38,6 @@ class CategoryDropdown extends StatelessWidget {
     ];
 
     return DropdownMenu<ExpenseCategory?>(
-      key: ValueKey(selectedCategory),
       initialSelection: selectedCategory,
       dropdownMenuEntries: dropdownItems,
       onSelected: onCategoryChanged,

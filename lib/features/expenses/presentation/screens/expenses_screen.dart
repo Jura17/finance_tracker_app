@@ -31,7 +31,7 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
           padding: const EdgeInsets.all(16.0),
           child: BlocConsumer<ExpenseBloc, ExpenseState>(
             listener: (context, state) {
-              if (state.message != null) {
+              if (state.message != null && state.message!.isNotEmpty) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(state.message!),

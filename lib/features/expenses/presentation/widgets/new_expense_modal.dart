@@ -45,7 +45,9 @@ class _NewExpenseModalState extends State<NewExpenseModal> {
                       CategoryDropdown(
                         selectedCategory: selectedCategory,
                         onCategoryChanged: (value) {
-                          if (value != null) selectedCategory = value;
+                          setState(() {
+                            if (value != null) selectedCategory = value;
+                          });
                         },
                       ),
                     ],
