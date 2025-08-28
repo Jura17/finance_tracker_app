@@ -25,3 +25,5 @@ class NewExpenseCategoryChanged extends ExpenseEvent {
   final ExpenseCategory category;
   NewExpenseCategoryChanged(this.category);
 }
+
+class CalculateSum extends ExpenseEvent {}

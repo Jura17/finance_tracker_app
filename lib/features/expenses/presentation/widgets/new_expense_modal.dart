@@ -4,7 +4,6 @@ import 'package:finance_tracker_app/features/expenses/bloc/expense_state.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/amount_field.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/confirm_button.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/description_field.dart';
-import 'package:finance_tracker_app/core/utils/expense_category.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/category_dropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

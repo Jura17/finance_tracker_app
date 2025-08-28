@@ -1,4 +1,5 @@
 import 'package:finance_tracker_app/core/app_colors.dart';
+import 'package:finance_tracker_app/core/utils/truncate_decimals.dart';
 import 'package:finance_tracker_app/features/expenses/bloc/expense_bloc.dart';
 import 'package:finance_tracker_app/features/expenses/bloc/expense_event.dart';
 import 'package:finance_tracker_app/features/expenses/bloc/expense_state.dart';
@@ -42,17 +43,31 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
             },
             builder: (context, state) {
               final filteredExpenses = state.filteredExpenses;
+              final truncatedValue = truncateTo2Decimals(state.sumExpenseAmounts);
 
               return Column(
                 spacing: 20,
                 children: [
                   // Category selection
-                  CategoryDropdown(
-                    selectedCategory: state.selectedCategory,
-                    onCategoryChanged: (value) {
-                      context.read<ExpenseBloc>().add(FilterExpenses(value));
-                    },
-                    isForFiltering: true,
+                  Row(
+                    spacing: 20,
+                    children: [
+                      CategoryDropdown(
+                        selectedCategory: state.selectedCategory,
+                        onCategoryChanged: (value) {
+                          context.read<ExpenseBloc>().add(FilterExpenses(value));
+
+                          context.read<ExpenseBloc>().add(CalculateSum());
+                        },
+                        isForFiltering: true,
+                      ),
+                      BlocBuilder<ExpenseBloc, ExpenseState>(builder: (context, state) {
+                        return Text(
+                          "Total: ${truncatedValue.toStringAsFixed(2)} €",
+                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
+                        );
+                      }),
+                    ],
                   ),
                   Expanded(
                     child: filteredExpenses.isEmpty

@@ -55,6 +55,12 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       emit(state.copyWith(newExpenseCategory: updatedCategory));
     });
 
+    on<CalculateSum>((event, emit) {
+      final List<double> expenseAmounts = state.filteredExpenses.map((expense) => expense.amount).toList();
+      var sum = expenseAmounts.fold(0.0, (sum, amount) => (sum + amount));
+      emit(state.copyWith(sumExpenseAmounts: sum));
+    });
+
     // load all expenses when bloc gets created
     add(LoadExpenses());
   }

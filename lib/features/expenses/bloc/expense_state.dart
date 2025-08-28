@@ -6,12 +6,14 @@ class ExpenseState {
   final ExpenseCategory newExpenseCategory;
   final List<Expense> filteredExpenses;
   final String? message;
+  final double sumExpenseAmounts;
 
   ExpenseState({
     this.selectedCategory,
     this.newExpenseCategory = ExpenseCategory.clothing,
     this.filteredExpenses = const [],
     this.message,
+    this.sumExpenseAmounts = 0,
   });
 
   // used to overwrite state
@@ -20,12 +22,14 @@ class ExpenseState {
     ExpenseCategory? newExpenseCategory,
     List<Expense>? filteredExpenses,
     String? message,
+    double? sumExpenseAmounts,
   }) {
     return ExpenseState(
       selectedCategory: selectedCategory,
       newExpenseCategory: newExpenseCategory ?? this.newExpenseCategory,
       filteredExpenses: filteredExpenses ?? this.filteredExpenses,
       message: message ?? this.message,
+      sumExpenseAmounts: sumExpenseAmounts ?? this.sumExpenseAmounts,
     );
   }
 }
