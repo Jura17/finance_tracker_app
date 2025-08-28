@@ -20,3 +20,8 @@ class FilterExpenses extends ExpenseEvent {
   final ExpenseCategory? category;
   FilterExpenses(this.category);
 }
+
+class NewExpenseCategoryChanged extends ExpenseEvent {
+  final ExpenseCategory category;
+  NewExpenseCategoryChanged(this.category);
+}

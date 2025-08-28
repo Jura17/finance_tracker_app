@@ -15,7 +15,6 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
 
     // ADD
     on<AddExpense>((event, emit) {
-      print(event.expense.category);
       repo.addExpense(event.expense);
       final updatedFiltered = repo.filterByCategory(event.expense.category);
 
@@ -48,6 +47,12 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
         filteredExpenses: filtered,
         message: "",
       ));
+    });
+
+    // CHANGE CATEGORY IN NEW EXPENSE MODAL
+    on<NewExpenseCategoryChanged>((event, emit) {
+      final updatedCategory = event.category;
+      emit(state.copyWith(newExpenseCategory: updatedCategory));
     });
 
     // load all expenses when bloc gets created

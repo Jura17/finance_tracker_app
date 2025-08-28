@@ -1,9 +1,13 @@
+import 'package:finance_tracker_app/features/expenses/bloc/expense_bloc.dart';
+import 'package:finance_tracker_app/features/expenses/bloc/expense_event.dart';
+import 'package:finance_tracker_app/features/expenses/bloc/expense_state.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/amount_field.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/confirm_button.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/description_field.dart';
 import 'package:finance_tracker_app/core/utils/expense_category.dart';
 import 'package:finance_tracker_app/features/expenses/presentation/widgets/category_dropdown.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class NewExpenseModal extends StatefulWidget {
   const NewExpenseModal({super.key});
@@ -16,8 +20,6 @@ class _NewExpenseModalState extends State<NewExpenseModal> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController amountCtrl = TextEditingController();
   final TextEditingController descriptionCtrl = TextEditingController();
-
-  ExpenseCategory selectedCategory = ExpenseCategory.clothing;
 
   @override
   Widget build(BuildContext context) {
@@ -42,23 +44,27 @@ class _NewExpenseModalState extends State<NewExpenseModal> {
                     spacing: 10,
                     children: [
                       AmountField(amountCtrl: amountCtrl),
-                      CategoryDropdown(
-                        selectedCategory: selectedCategory,
-                        onCategoryChanged: (value) {
-                          setState(() {
-                            if (value != null) selectedCategory = value;
-                          });
-                        },
-                      ),
+                      BlocBuilder<ExpenseBloc, ExpenseState>(builder: (context, state) {
+                        return CategoryDropdown(
+                          selectedCategory: state.newExpenseCategory,
+                          onCategoryChanged: (value) {
+                            if (value != null) {
+                              context.read<ExpenseBloc>().add(NewExpenseCategoryChanged(value));
+                            }
+                          },
+                        );
+                      }),
                     ],
                   ),
                   DescriptionField(descriptionCtrl: descriptionCtrl),
-                  ConfirmButton(
-                    formKey: formKey,
-                    selectedCategory: selectedCategory,
-                    descriptionCtrl: descriptionCtrl,
-                    amountCtrl: amountCtrl,
-                  )
+                  BlocBuilder<ExpenseBloc, ExpenseState>(builder: (context, state) {
+                    return ConfirmButton(
+                      formKey: formKey,
+                      selectedCategory: state.newExpenseCategory,
+                      descriptionCtrl: descriptionCtrl,
+                      amountCtrl: amountCtrl,
+                    );
+                  })
                 ],
               ),
             ),
