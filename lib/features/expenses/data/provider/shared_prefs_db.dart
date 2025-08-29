@@ -22,6 +22,7 @@ class SharedPrefsDb {
     final List<dynamic> decoded = jsonDecode(expensesString);
     final List<Expense> expensesList = decoded.map((e) => Expense.fromJson(e)).toList();
     _localCopy = expensesList;
+    // await Future.delayed(Duration(seconds: 2));
   }
 
   Future<void> overrideExpenses() async {

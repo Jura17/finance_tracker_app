@@ -5,9 +5,10 @@ import 'package:finance_tracker_app/features/expenses/data/provider/shared_prefs
 
 class DatabaseRepo {
   final localDatabase = SharedPrefsDb();
-  DatabaseRepo() {
-    localDatabase.loadExpenses();
+
+  Future<void> loadExpenses() async {
     // localDatabase.emptyDb();
+    await localDatabase.loadExpenses();
   }
 
   List<Expense> get expenses => localDatabase.expenses;

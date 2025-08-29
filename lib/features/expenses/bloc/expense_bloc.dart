@@ -8,9 +8,17 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
 
   ExpenseBloc(this.repo) : super(ExpenseState()) {
     // LOAD
-    on<LoadExpenses>((event, emit) {
-      final allExpenses = repo.expenses;
-      emit(state.copyWith(filteredExpenses: allExpenses, selectedCategory: null));
+    on<LoadExpenses>((event, emit) async {
+      try {
+        emit(state.copyWith(status: ExpenseStatus.loading));
+        await repo.loadExpenses();
+        final allExpenses = repo.expenses;
+        // TODO: put CalculateSum logic into all the events (add, remove, etc.) so there is no need for separate event
+        add(CalculateSum());
+        emit(state.copyWith(status: ExpenseStatus.success, filteredExpenses: allExpenses, selectedCategory: null));
+      } catch (e) {
+        emit(state.copyWith(status: ExpenseStatus.failure));
+      }
     });
 
     // ADD
@@ -60,8 +68,5 @@ class ExpenseBloc extends Bloc<ExpenseEvent, ExpenseState> {
       var sum = expenseAmounts.fold(0.0, (sum, amount) => (sum + amount));
       emit(state.copyWith(sumExpenseAmounts: sum));
     });
-
-    // load all expenses when bloc gets created
-    add(LoadExpenses());
   }
 }

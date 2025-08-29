@@ -18,8 +18,11 @@ class ExpensesScreen extends StatefulWidget {
 }
 
 class _ExpensesScreenState extends State<ExpensesScreen> {
+  double totalSum = 0.0;
+
   @override
   Widget build(BuildContext context) {
+    context.read<ExpenseBloc>().add(CalculateSum());
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -30,69 +33,87 @@ class _ExpensesScreenState extends State<ExpensesScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: BlocConsumer<ExpenseBloc, ExpenseState>(
-            listener: (context, state) {
-              if (state.message != null && state.message!.isNotEmpty) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(state.message!),
-                    duration: Duration(milliseconds: 1500),
-                  ),
-                );
-              }
-            },
-            builder: (context, state) {
-              final filteredExpenses = state.filteredExpenses;
-              final truncatedValue = truncateTo2Decimals(state.sumExpenseAmounts);
+          child: Center(
+            child: BlocConsumer<ExpenseBloc, ExpenseState>(
+              listener: (context, state) {
+                if (state.message != null && state.message!.isNotEmpty) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(state.message!),
+                      duration: Duration(milliseconds: 1500),
+                    ),
+                  );
+                }
+              },
+              builder: (context, state) {
+                switch (state.status) {
+                  case ExpenseStatus.initial:
+                    return Text("Das sollte eigentlich nicht passieren...");
+                  case ExpenseStatus.loading:
+                    return Column(
+                      spacing: 20,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Simuliere Ladevorgang...", style: Theme.of(context).textTheme.headlineSmall),
+                        SizedBox(width: 60, height: 60, child: CircularProgressIndicator(strokeWidth: 5)),
+                      ],
+                    );
+                  case ExpenseStatus.failure:
+                    return Text("Beim Laden der Daten ist ein Fehler aufgetreten.");
+                  case ExpenseStatus.success:
+                    final filteredExpenses = state.filteredExpenses;
 
-              return Column(
-                spacing: 20,
-                children: [
-                  // Category selection
-                  Row(
-                    spacing: 20,
-                    children: [
-                      CategoryDropdown(
-                        selectedCategory: state.selectedCategory,
-                        onCategoryChanged: (value) {
-                          context.read<ExpenseBloc>().add(FilterExpenses(value));
+                    totalSum = truncateTo2Decimals(state.sumExpenseAmounts);
 
-                          context.read<ExpenseBloc>().add(CalculateSum());
-                        },
-                        isForFiltering: true,
-                      ),
-                      BlocBuilder<ExpenseBloc, ExpenseState>(builder: (context, state) {
-                        return Text(
-                          "Total: ${truncatedValue.toStringAsFixed(2)} €",
-                          style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
-                        );
-                      }),
-                    ],
-                  ),
-                  Expanded(
-                    child: filteredExpenses.isEmpty
-                        ? Center(
-                            child: Text(
-                              state.selectedCategory == null
-                                  ? "Keine Ausgaben vorhanden"
-                                  : "Keine ${categoryLabels[state.selectedCategory]}ausgaben vorhanden",
-                              style: Theme.of(context).textTheme.bodyLarge,
+                    return Column(
+                      spacing: 20,
+                      children: [
+                        // Category selection
+                        Row(
+                          spacing: 20,
+                          children: [
+                            CategoryDropdown(
+                              selectedCategory: state.selectedCategory,
+                              onCategoryChanged: (value) {
+                                context.read<ExpenseBloc>().add(FilterExpenses(value));
+                                context.read<ExpenseBloc>().add(CalculateSum());
+                              },
+                              isForFiltering: true,
                             ),
-                          )
-                        // Expense cards
-                        : ListView.builder(
-                            itemCount: filteredExpenses.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(vertical: 4.0),
-                                child: ExpenseCard(filteredExpenses: filteredExpenses, index: index),
+                            BlocBuilder<ExpenseBloc, ExpenseState>(builder: (context, state) {
+                              return Text(
+                                "Total: ${totalSum.toStringAsFixed(2)} €",
+                                style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w500),
                               );
-                            },
-                          ),
-                  ),
-                ],
-              );
-            },
+                            }),
+                          ],
+                        ),
+                        Expanded(
+                          child: filteredExpenses.isEmpty
+                              ? Center(
+                                  child: Text(
+                                    state.selectedCategory == null
+                                        ? "Keine Ausgaben vorhanden"
+                                        : "Keine ${categoryLabels[state.selectedCategory]}ausgaben vorhanden",
+                                    style: Theme.of(context).textTheme.bodyLarge,
+                                  ),
+                                )
+                              // Expense cards
+                              : ListView.builder(
+                                  itemCount: filteredExpenses.length,
+                                  itemBuilder: (BuildContext context, int index) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 4.0),
+                                      child: ExpenseCard(filteredExpenses: filteredExpenses, index: index),
+                                    );
+                                  },
+                                ),
+                        ),
+                      ],
+                    );
+                }
+              },
+            ),
           ),
         ),
       ),
