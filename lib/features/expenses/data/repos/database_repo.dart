@@ -1,11 +1,13 @@
 import 'package:finance_tracker_app/core/utils/expense_category.dart';
 import 'package:finance_tracker_app/features/expenses/data/models/expense.dart';
-import 'package:finance_tracker_app/features/expenses/data/provider/local_database.dart';
+// import 'package:finance_tracker_app/features/expenses/data/provider/local_db.dart';
+import 'package:finance_tracker_app/features/expenses/data/provider/shared_prefs_db.dart';
 
 class DatabaseRepo {
-  final localDatabase = LocalDatabase();
+  final localDatabase = SharedPrefsDb();
   DatabaseRepo() {
-    localDatabase.addMockData();
+    localDatabase.loadExpenses();
+    // localDatabase.emptyDb();
   }
 
   List<Expense> get expenses => localDatabase.expenses;

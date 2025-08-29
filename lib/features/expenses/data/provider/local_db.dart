@@ -1,5 +1,5 @@
 import 'package:finance_tracker_app/features/expenses/data/models/expense.dart';
-import 'package:finance_tracker_app/features/expenses/data/provider/mockdata.dart';
+import 'package:finance_tracker_app/core/utils/mockdata.dart';
 
 class LocalDatabase {
   List<Expense> expensesDB = [];

@@ -4,7 +4,7 @@ import 'package:finance_tracker_app/features/expenses/bloc/expense_bloc.dart';
 import 'package:finance_tracker_app/features/expenses/bloc/expense_event.dart';
 import 'package:finance_tracker_app/features/expenses/bloc/expense_state.dart';
 import 'package:finance_tracker_app/features/expenses/data/models/expense.dart';
-import 'package:finance_tracker_app/features/expenses/data/provider/mockdata.dart';
+import 'package:finance_tracker_app/core/utils/mockdata.dart';
 import 'package:finance_tracker_app/features/expenses/data/repos/database_repo.dart';
 import 'package:flutter_test/flutter_test.dart';
 

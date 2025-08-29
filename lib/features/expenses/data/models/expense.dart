@@ -14,4 +14,20 @@ class Expense {
     required this.description,
     required this.amount,
   });
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'date': date.toIso8601String(),
+        'category': category.toString(),
+        'description': description,
+        'amount': amount,
+      };
+
+  factory Expense.fromJson(Map<String, dynamic> json) => Expense(
+        id: json['id'],
+        date: DateTime.parse(json['date']),
+        category: ExpenseCategory.values.firstWhere((category) => json['category'] == category.toString()),
+        description: json['description'],
+        amount: json['amount'],
+      );
 }
